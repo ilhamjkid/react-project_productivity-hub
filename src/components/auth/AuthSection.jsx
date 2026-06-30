@@ -2,13 +2,18 @@ import { Link } from "react-router";
 
 export default function AuthSection({ children, sign }) {
   return (
-    <section className="w-full min-h-screen bg-slate-950 text-slate-200 flex justify-center items-center">
-      <div className="w-full max-w-105 md:max-w-160 lg:max-w-215 p-5">
-        <h2 className="font-semibold text-center text-4xl uppercase mb-6">SIGN {sign}</h2>
+    <section className="flex min-h-screen w-full items-center justify-center bg-slate-950 text-slate-200">
+      <div className="w-full max-w-105 p-5 md:max-w-160 lg:max-w-215">
+        <h2 className="mb-6 text-center text-4xl font-semibold uppercase">
+          SIGN {sign}
+        </h2>
         {children}
         <p className="text-center text-xl">
-          <span>{sign.toLowerCase() === "up" ? "Already" : "Don't"} have an account? </span>
-          <span className="break-keep inline-block">
+          <span>
+            {sign.toLowerCase() === "up" ? "Already" : "Don't"} have an
+            account?{" "}
+          </span>
+          <span className="inline-block break-keep">
             Please{" "}
             <Link
               to={sign.toLowerCase() === "up" ? "/signin" : "/signup"}

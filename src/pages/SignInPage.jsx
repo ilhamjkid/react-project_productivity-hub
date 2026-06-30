@@ -28,7 +28,9 @@ export default function SignIn() {
       password: !formData.password ? "Password is required!" : "",
     };
     setValidationMessage(newValidationMessage);
-    const isValid = Object.values(newValidationMessage).every((msg) => msg === "");
+    const isValid = Object.values(newValidationMessage).every(
+      (msg) => msg === "",
+    );
     if (isValid) {
       console.dir(formData);
     }
@@ -36,7 +38,10 @@ export default function SignIn() {
 
   return (
     <AuthSection sign="in">
-      <form onSubmit={handleSubmit} className="w-full max-w-120 flex flex-col gap-4 mb-6 mx-auto">
+      <form
+        onSubmit={handleSubmit}
+        className="mx-auto mb-6 flex w-full max-w-120 flex-col gap-4"
+      >
         <AuthInputField
           forId="username"
           label="Username"
@@ -53,7 +58,7 @@ export default function SignIn() {
         />
         <button
           type="submit"
-          className="bg-blue-500 font-semibold text-center text-xl p-4 mt-2 rounded-lg cursor-pointer hover:opacity-80 focus:opacity-80 focus:outline-none"
+          className="mt-2 cursor-pointer rounded-lg bg-blue-500 p-4 text-center text-xl font-semibold hover:opacity-80 focus:opacity-80 focus:outline-none"
         >
           SUBMIT
         </button>
