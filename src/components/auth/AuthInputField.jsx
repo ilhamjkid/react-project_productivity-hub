@@ -7,8 +7,8 @@ export default function AuthInputField({
   validationMessage,
 }) {
   return (
-    <div className="w-full flex flex-col gap-y-1">
-      <label htmlFor={forId} className="text-xl ml-2">
+    <div className="flex w-full flex-col gap-y-1">
+      <label htmlFor={forId} className="ml-2 text-xl">
         {label}
       </label>
       {children || (
@@ -17,10 +17,12 @@ export default function AuthInputField({
           id={forId}
           value={value}
           onChange={onChange}
-          className="w-full bg-slate-800 text-xl py-3 px-4 rounded-lg focus:outline-2 focus:outline-solid focus:outline-blue-500"
+          className="w-full rounded-lg bg-slate-800 px-4 py-3 text-xl focus:outline-2 focus:outline-blue-500 focus:outline-solid"
         />
       )}
-      {validationMessage && <p className="text-red-500 text-sm italic">{validationMessage}</p>}
+      {validationMessage && (
+        <p className="text-sm text-red-500 italic">{validationMessage}</p>
+      )}
     </div>
   );
 }
