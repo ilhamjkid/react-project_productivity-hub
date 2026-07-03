@@ -1,3 +1,51 @@
+import { useEffect, useReducer, useState } from "react";
+import { tasksReducer, tasksInit } from "../reducers/tasksReducer.js";
+import TextInput from "../components/common/TextInput.jsx";
+import Button from "../components/common/Button.jsx";
+import TaskItem from "../components/tasks/TaskItem.jsx";
+
 export default function TasksPage() {
-  return <h1>Tasks Page</h1>;
+  const [tasks, tasksDispatch] = useReducer(tasksReducer, null, tasksInit);
+  const [validation, setValidation] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const taskText = formData.get("taskText");
+    if (!taskText) return setValidation("Your task cannot be empty.");
+    tasksDispatch({ type: "ADD_TASK", payload: { text: taskText } });
+    if (validation) setValidation("");
+    e.target.reset();
+  }
+
+  useEffect(() => {
+    localStorage.setItem("prodhub_tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  return (
+    <section className="min-h-screen w-full pt-18 lg:pt-0">
+      <div className="mx-auto flex w-full max-w-200 flex-col items-center gap-6 p-5 text-slate-200">
+        <h2 className="text-center text-2xl font-semibold">Task Management</h2>
+        <form onSubmit={handleSubmit} className="flex w-full items-start gap-2">
+          <TextInput
+            name="taskText"
+            placeholder="Your task ..."
+            validationMessage={validation}
+          />
+          <Button type="submit">SUBMIT</Button>
+        </form>
+        {tasks.length === 0 ? (
+          <h3 className="text-center text-xl">Task Empty</h3>
+        ) : (
+          <ul className="w-full divide-y divide-slate-900 overflow-hidden rounded-lg bg-slate-800">
+            {tasks.toReversed().map((task) => (
+              <li key={task.id}>
+                <TaskItem task={task} tasksDispatch={tasksDispatch} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  );
 }
