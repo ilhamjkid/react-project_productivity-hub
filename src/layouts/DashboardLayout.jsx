@@ -5,7 +5,7 @@ export default function DashboardLayout() {
   return (
     <div className="flex flex-nowrap bg-slate-900">
       <Sidebar />
-      <main className="h-screen w-full overflow-y-auto pt-18 lg:pt-0">
+      <main className="h-screen w-full overflow-y-auto">
         <Outlet />
       </main>
     </div>
