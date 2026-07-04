@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Button from "../common/Button";
-import TextInput from "../common/TextInput";
+import Button from "../common/Button.jsx";
+import TextInput from "../common/TextInput.jsx";
 
 export default function TaskItemEdit({
   task,
