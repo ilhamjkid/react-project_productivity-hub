@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
+  faCircleXmark,
   faPenToSquare,
   faDeleteLeft,
 } from "@fortawesome/free-solid-svg-icons";
@@ -27,10 +28,12 @@ export default function TaskItemView({
               payload: { id: task.id },
             })
           }
-          bgColor="bg-slate-500"
+          bgColor={task.isCompleted ? "bg-slate-500" : "bg-blue-500"}
           size="sm"
         >
-          <FontAwesomeIcon icon={faCircleCheck} />
+          <FontAwesomeIcon
+            icon={task.isCompleted ? faCircleXmark : faCircleCheck}
+          />
         </Button>
         <Button
           onClick={onClickEditStatusButton}

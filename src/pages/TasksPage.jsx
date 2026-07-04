@@ -8,6 +8,10 @@ export default function TasksPage() {
   const [tasks, tasksDispatch] = useReducer(tasksReducer, null, tasksInit);
   const [validation, setValidation] = useState("");
 
+  useEffect(() => {
+    localStorage.setItem("prodhub_tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
   function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -17,10 +21,6 @@ export default function TasksPage() {
     if (validation) setValidation("");
     e.target.reset();
   }
-
-  useEffect(() => {
-    localStorage.setItem("prodhub_tasks", JSON.stringify(tasks));
-  }, [tasks]);
 
   return (
     <section className="min-h-screen w-full pt-18 lg:pt-0">
