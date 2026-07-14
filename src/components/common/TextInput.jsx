@@ -6,6 +6,8 @@ export default function TextInput({
   value,
   defaultValue,
   placeholder,
+  cols,
+  rows,
   onChange,
   validationMessage,
   bgColor = "bg-slate-800",
@@ -47,6 +49,8 @@ export default function TextInput({
           value={value}
           defaultValue={defaultValue}
           placeholder={placeholder}
+          cols={cols}
+          rows={rows}
           onChange={onChange}
           className={`w-full placeholder:text-slate-400 focus:outline-2 focus:outline-blue-500 focus:outline-solid ${bgColor} ${sizeVariants.input[size]}`}
         />
