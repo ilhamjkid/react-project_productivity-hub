@@ -7,7 +7,7 @@ export default function Button({
 }) {
   const sizeVariants = {
     sm: "rounded-sm py-2 px-4 text-sm",
-    md: "rounded-md py-3 px-5 text-md",
+    md: "rounded-md py-3 px-5 text-base",
     lg: "rounded-lg py-4 px-6 text-lg",
   };
 
