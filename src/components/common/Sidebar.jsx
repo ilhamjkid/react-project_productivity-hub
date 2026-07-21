@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router";
+import { AuthContext } from "../../context/Contexts.js";
+import Button from "./Button.jsx";
 
 export default function Sidebar() {
+  const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
   const [isHidden, setIsHidden] = useState(true);
 
   useEffect(() => {
@@ -13,6 +17,13 @@ export default function Sidebar() {
     window.addEventListener("resize", resetHiddenState);
     return () => window.removeEventListener("resize", resetHiddenState);
   }, []);
+
+  function handleClickBtnSignOut() {
+    authContext.currentUserDispatch({ type: "LOGOUT_USER" });
+    navigate("/signin", { replace: true });
+  }
+
+  function handleClickBtnDeleteAcc() {}
 
   return (
     <aside className="fixed top-0 right-0 left-0 w-full lg:static lg:max-w-80">
@@ -69,16 +80,19 @@ export default function Sidebar() {
               Notes
             </NavLink>
           </div>
-          <div className="flex w-full flex-col gap-5 p-5 lg:gap-4">
+          <div className="flex w-full flex-col gap-4 p-5">
             <h2 className="text-center text-2xl font-semibold text-slate-200 lg:text-xl">
-              Hi, Ilham Jaya Kusuma!
+              Hi, {authContext.currentUser.firstName}{" "}
+              {authContext.currentUser.lastName}!
             </h2>
-            <button
-              type="button"
-              className="cursor-pointer rounded-lg bg-red-500 py-4 text-center text-xl font-semibold text-slate-200 hover:opacity-80 focus:opacity-80 focus:outline-2 focus:outline-slate-200 focus:outline-solid lg:py-3 lg:text-lg"
-            >
-              SIGN OUT
-            </button>
+            <div className="grid w-full grid-cols-2 gap-2">
+              <Button onClick={handleClickBtnSignOut} bgColor="bg-red-500">
+                SIGN OUT
+              </Button>
+              <Button onClick={handleClickBtnDeleteAcc} bgColor="bg-red-500">
+                DELETE ACC
+              </Button>
+            </div>
           </div>
         </div>
       </div>

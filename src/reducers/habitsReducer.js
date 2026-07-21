@@ -5,6 +5,7 @@ export function habitsReducer(habits, action) {
         ...habits,
         {
           id: crypto.randomUUID(),
+          userId: action.payload.userId,
           text: action.payload.text,
           history: [],
           lastCompletedDate: null,
@@ -33,6 +34,9 @@ export function habitsReducer(habits, action) {
     }
     case "DELETE_HABIT": {
       return habits.filter((habit) => habit.id !== action.payload.id);
+    }
+    case "DELETE_HABITS_BY_USER": {
+      return habits.filter((habit) => habit.userId !== action.payload.userId);
     }
   }
   throw new Error(`Unknown action: ${action.type}`);

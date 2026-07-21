@@ -5,6 +5,7 @@ export function notesReducer(notes, action) {
         ...notes,
         {
           id: crypto.randomUUID(),
+          userId: action.payload.userId,
           title: action.payload.title,
           message: action.payload.message,
           createdAt: new Date().toISOString(),
@@ -23,6 +24,9 @@ export function notesReducer(notes, action) {
     }
     case "DELETE_NOTE": {
       return notes.filter((note) => note.id !== action.payload.id);
+    }
+    case "DELETE_NOTES_BY_USER": {
+      return notes.filter((note) => note.userId !== action.payload.userId);
     }
   }
   throw new Error(`Unknown action: ${action.type}`);

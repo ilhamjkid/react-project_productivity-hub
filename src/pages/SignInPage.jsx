@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
+import { AuthContext } from "../context/Contexts.js";
 import AuthSection from "../components/auth/AuthSection.jsx";
 import TextInput from "../components/common/TextInput.jsx";
 import PasswordInput from "../components/common/PasswordInput.jsx";
 import Button from "../components/common/Button.jsx";
 
 export default function SignIn() {
+  const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
   const [validation, setValidation] = useState({
     username: "",
     password: "",
@@ -15,14 +19,25 @@ export default function SignIn() {
     const formData = new FormData(e.target);
     const username = formData.get("username");
     const password = formData.get("password");
+    const user = authContext.users.find((user) => user.username === username);
+    const isUsernameNotFound = !user;
+    const isPasswordIncorrect = !!user && user.password !== password;
     const newValidation = {
-      username: !username ? "Username is required." : "",
-      password: !password ? "Password is required." : "",
+      username: !username
+        ? "Username is required."
+        : isUsernameNotFound
+          ? "Username not found."
+          : "",
+      password: !password
+        ? "Password is required."
+        : isPasswordIncorrect
+          ? "Password incorrect."
+          : "",
     };
     const isInvalid = !Object.values(newValidation).every((value) => !value);
     if (isInvalid) return setValidation(newValidation);
-    console.dir({ username, password });
-    setValidation({ username: "", password: "" });
+    authContext.currentUserDispatch({ type: "LOGIN_USER", payload: user });
+    navigate("/", { replace: true });
   }
 
   return (

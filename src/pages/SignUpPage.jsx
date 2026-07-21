@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
+import { AuthContext } from "../context/Contexts.js";
 import AuthSection from "../components/auth/AuthSection.jsx";
 import TextInput from "../components/common/TextInput.jsx";
 import PasswordInput from "../components/common/PasswordInput.jsx";
 import Button from "../components/common/Button.jsx";
 
 export default function SignUp() {
+  const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
   const [validation, setValidation] = useState({
     firstName: "",
     lastName: "",
@@ -21,31 +25,48 @@ export default function SignUp() {
     const username = formData.get("username");
     const password = formData.get("password");
     const confirmation = formData.get("confirmation");
+    const isUsernameNotAvailable = authContext.users.find(
+      (user) => user.username === username,
+    );
+    const isPasswordTooShort = password.length < 8;
+    const isConfirmationIncorrect = confirmation !== password;
     const newValidation = {
       firstName: !firstName ? "First Name is required." : "",
       lastName: !lastName ? "Last Name is required." : "",
-      username: !username ? "Username is required." : "",
+      username: !username
+        ? "Username is required."
+        : isUsernameNotAvailable
+          ? "Username not available."
+          : "",
       password: !password
         ? "Password is required."
-        : password.length < 8
+        : isPasswordTooShort
           ? "Password must be at least 8 characters."
           : "",
       confirmation: !confirmation
         ? "Confirm password is required."
-        : confirmation !== password
+        : isConfirmationIncorrect
           ? "Confirm password does not match."
           : "",
     };
     const isInvalid = !Object.values(newValidation).every((value) => !value);
     if (isInvalid) return setValidation(newValidation);
-    console.dir({ firstName, lastName, username, password });
-    setValidation({
-      firstName: "",
-      lastName: "",
-      username: "",
-      password: "",
-      confirmation: "",
+    const user = {
+      id: crypto.randomUUID(),
+      firstName,
+      lastName,
+      username,
+      password,
+    };
+    authContext.usersDispatch({
+      type: "REGISTER_USER",
+      payload: user,
     });
+    authContext.currentUserDispatch({
+      type: "LOGIN_USER",
+      payload: user,
+    });
+    navigate("/", { replace: true });
   }
 
   return (
