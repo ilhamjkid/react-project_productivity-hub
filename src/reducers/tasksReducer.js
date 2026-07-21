@@ -5,6 +5,7 @@ export function tasksReducer(tasks, action) {
         ...tasks,
         {
           id: crypto.randomUUID(),
+          userId: action.payload.userId,
           text: action.payload.text,
           isCompleted: false,
           createdAt: new Date().toISOString(),
@@ -25,6 +26,9 @@ export function tasksReducer(tasks, action) {
     }
     case "DELETE_TASK": {
       return tasks.filter((task) => task.id !== action.payload.id);
+    }
+    case "DELETE_TASKS_BY_USER": {
+      return tasks.filter((task) => task.userId !== action.payload.userId);
     }
   }
   throw new Error(`Unknown action: ${action.type}`);

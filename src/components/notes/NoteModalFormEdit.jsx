@@ -16,8 +16,8 @@ export default function NoteModalFormEdit({ setModal, note, notesDispatch }) {
     const isNoChange = title === note.title && message === note.message;
     if (isNoChange) return setModal((prev) => ({ ...prev, type: "view" }));
     const newValidation = {
-      title: !title ? "Title cannot be empty!" : "",
-      message: !message ? "Message cannot be empty!" : "",
+      title: !title ? "Title cannot be empty." : "",
+      message: !message ? "Message cannot be empty." : "",
     };
     const isInvalid = !Object.values(newValidation).every((value) => !value);
     if (isInvalid) return setValidation(newValidation);

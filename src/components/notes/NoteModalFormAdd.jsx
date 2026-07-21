@@ -14,8 +14,8 @@ export default function NoteModalFormAdd({ setModal, notesDispatch }) {
     const title = formData.get("noteTitle");
     const message = formData.get("noteMessage");
     const newValidation = {
-      title: !title ? "Title cannot be empty!" : "",
-      message: !message ? "Message cannot be empty!" : "",
+      title: !title ? "Title cannot be empty." : "",
+      message: !message ? "Message cannot be empty." : "",
     };
     const isInvalid = !Object.values(newValidation).every((value) => !value);
     if (isInvalid) return setValidation(newValidation);
