@@ -1,16 +1,38 @@
-# React + Vite
+# Productivity Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple client-side productivity web application for managing tasks, tracking habits, and taking notes. Built with React and powered by LocalStorage for data persistence.
 
-Currently, two official plugins are available:
+## 🚀 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Authentication System:** Sign up, sign in, and account deletion with state-based route guards.
+- **Task Management:** Full CRUD operations (create, read, edit, delete, toggle status) for user tasks.
+- **Habits & Notes Tracker:** Track daily habits and store notes per user session.
+- **Global State Management:** Context API combined with `useReducer` for clean, scalable state flow.
+- **Local Persistence:** Automatic synchronization with browser `localStorage`.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework:** React + Vite
+- **Styling:** Tailwind CSS
+- **Icons:** FontAwesome
+- **Routing:** React Router
 
-## Expanding the ESLint configuration
+## 💻 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone the repository:
+
+```bash
+git clone https://github.com/ilhamjkid/react-project_productivity-hub.git
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
+
+```bash
+npm run dev
+```
