@@ -1,16 +1,17 @@
-import { useEffect, useReducer, useState } from "react";
-import { notesReducer, notesInit } from "../reducers/notesReducer.js";
+import { useContext, useState } from "react";
+import { AppDataContext, AuthContext } from "../context/Contexts.js";
 import Button from "../components/common/Button.jsx";
 import NoteList from "../components/notes/NoteList.jsx";
 import NoteModal from "../components/notes/NoteModal.jsx";
 
 export default function NotesPage() {
-  const [notes, notesDispatch] = useReducer(notesReducer, null, notesInit);
+  const { currentUser } = useContext(AuthContext);
+  const { notes } = useContext(AppDataContext);
   const [modal, setModal] = useState({ show: false, type: "", note: null });
 
-  useEffect(() => {
-    localStorage.setItem("prodhub_notes", JSON.stringify(notes));
-  }, [notes]);
+  const notesByCurrentUser = notes
+    .filter((note) => note.userId === currentUser.id)
+    .toReversed();
 
   return (
     <>
@@ -24,20 +25,14 @@ export default function NotesPage() {
           >
             ADD NOTE
           </Button>
-          {notes.length === 0 ? (
+          {notesByCurrentUser.length === 0 ? (
             <h3 className="text-center text-xl">Note Empty</h3>
           ) : (
-            <NoteList notes={notes} setModal={setModal} />
+            <NoteList notes={notesByCurrentUser} setModal={setModal} />
           )}
         </div>
       </section>
-      {modal.show && (
-        <NoteModal
-          modal={modal}
-          setModal={setModal}
-          notesDispatch={notesDispatch}
-        />
-      )}
+      {modal.show && <NoteModal modal={modal} setModal={setModal} />}
     </>
   );
 }

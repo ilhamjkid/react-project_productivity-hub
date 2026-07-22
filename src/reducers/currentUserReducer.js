@@ -12,4 +12,5 @@ export function currentUserReducer(currentUser, action) {
       return null;
     }
   }
+  throw new Error(`Unknown action: ${action.type}`);
 }

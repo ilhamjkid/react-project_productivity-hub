@@ -1,35 +1,32 @@
 import { useState } from "react";
+import TaskItemView from "./TaskItemView.jsx";
 import TaskItemEdit from "./TaskItemEdit.jsx";
 import TaskItemDelete from "./TaskItemDelete.jsx";
-import TaskItemView from "./TaskItemView.jsx";
 
-export default function TaskItem({ task, tasksDispatch }) {
+export default function TaskItem({ task }) {
   const [status, setStatus] = useState("view");
 
-  if (status === "edit") {
-    return (
-      <TaskItemEdit
-        task={task}
-        tasksDispatch={tasksDispatch}
-        onClickCancelButton={() => setStatus("view")}
-      />
-    );
-  }
-  if (status === "delete") {
-    return (
-      <TaskItemDelete
-        task={task}
-        tasksDispatch={tasksDispatch}
-        onClickCancelButton={() => setStatus("view")}
-      />
-    );
-  }
   return (
-    <TaskItemView
-      task={task}
-      tasksDispatch={tasksDispatch}
-      onClickEditStatusButton={() => setStatus("edit")}
-      onClickDeleteStatusButton={() => setStatus("delete")}
-    />
+    <li>
+      {status === "view" ? (
+        <TaskItemView
+          task={task}
+          onClickEditStatusButton={() => setStatus("edit")}
+          onClickDeleteStatusButton={() => setStatus("delete")}
+        />
+      ) : status === "edit" ? (
+        <TaskItemEdit
+          task={task}
+          onClickCancelButton={() => setStatus("view")}
+        />
+      ) : status === "delete" ? (
+        <TaskItemDelete
+          task={task}
+          onClickCancelButton={() => setStatus("view")}
+        />
+      ) : (
+        ""
+      )}
+    </li>
   );
 }

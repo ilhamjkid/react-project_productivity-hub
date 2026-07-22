@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppDataContext } from "../../context/Contexts.js";
 import Button from "../common/Button.jsx";
 import TextInput from "../common/TextInput.jsx";
 
-export default function TaskItemEdit({
-  task,
-  tasksDispatch,
-  onClickCancelButton,
-}) {
+export default function TaskItemEdit({ task, onClickCancelButton }) {
+  const { tasksDispatch } = useContext(AppDataContext);
   const [validation, setValidation] = useState("");
 
   function handleSubmit(e) {

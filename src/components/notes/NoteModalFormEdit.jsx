@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppDataContext } from "../../context/Contexts.js";
 import TextInput from "../common/TextInput.jsx";
 import Button from "../common/Button.jsx";
 
-export default function NoteModalFormEdit({ setModal, note, notesDispatch }) {
+export default function NoteModalFormEdit({ setModal, note }) {
+  const { notesDispatch } = useContext(AppDataContext);
   const [validation, setValidation] = useState({
     title: "",
     message: "",

@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router";
-import { AuthContext } from "../../context/Contexts.js";
+import { NavLink } from "react-router";
+import { AppDataContext, AuthContext } from "../../context/Contexts.js";
 import Button from "./Button.jsx";
 
 export default function Sidebar() {
   const authContext = useContext(AuthContext);
-  const navigate = useNavigate();
+  const appDataContext = useContext(AppDataContext);
   const [isHidden, setIsHidden] = useState(true);
 
   useEffect(() => {
@@ -20,10 +20,27 @@ export default function Sidebar() {
 
   function handleClickBtnSignOut() {
     authContext.currentUserDispatch({ type: "LOGOUT_USER" });
-    navigate("/signin", { replace: true });
   }
 
-  function handleClickBtnDeleteAcc() {}
+  function handleClickBtnDeleteAcc() {
+    appDataContext.tasksDispatch({
+      type: "DELETE_TASKS_BY_USER",
+      payload: { userId: authContext.currentUser.id },
+    });
+    appDataContext.habitsDispatch({
+      type: "DELETE_HABITS_BY_USER",
+      payload: { userId: authContext.currentUser.id },
+    });
+    appDataContext.notesDispatch({
+      type: "DELETE_NOTES_BY_USER",
+      payload: { userId: authContext.currentUser.id },
+    });
+    authContext.usersDispatch({
+      type: "DELETE_USER",
+      payload: { id: authContext.currentUser.id },
+    });
+    authContext.currentUserDispatch({ type: "LOGOUT_USER" });
+  }
 
   return (
     <aside className="fixed top-0 right-0 left-0 w-full lg:static lg:max-w-80">

@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppDataContext } from "../../context/Contexts.js";
 import Button from "../common/Button.jsx";
 
-export default function NoteModalView({ setModal, note, notesDispatch }) {
+export default function NoteModalView({ setModal, note }) {
+  const { notesDispatch } = useContext(AppDataContext);
   const [isDeleteRequested, setIsDeleteRequested] = useState(false);
 
   function handleClickBtnDeleteNote() {

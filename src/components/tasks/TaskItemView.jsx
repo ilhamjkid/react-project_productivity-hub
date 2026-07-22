@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
@@ -5,14 +6,16 @@ import {
   faPenToSquare,
   faDeleteLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import { AppDataContext } from "../../context/Contexts.js";
 import Button from "../common/Button.jsx";
 
 export default function TaskItemView({
   task,
-  tasksDispatch,
   onClickEditStatusButton,
   onClickDeleteStatusButton,
 }) {
+  const { tasksDispatch } = useContext(AppDataContext);
+
   return (
     <div className="flex w-full flex-wrap items-center gap-2 p-4 lg:flex-nowrap">
       <p

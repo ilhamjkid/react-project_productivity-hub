@@ -3,7 +3,7 @@ import Button from "../common/Button.jsx";
 export default function NoteList({ notes, setModal }) {
   return (
     <div className="grid w-full gap-6 md:grid-cols-2">
-      {notes.toReversed().map((note) => {
+      {notes.map((note) => {
         return (
           <div
             key={note.id}

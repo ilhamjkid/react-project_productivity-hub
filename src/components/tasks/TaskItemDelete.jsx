@@ -1,10 +1,10 @@
+import { useContext } from "react";
+import { AppDataContext } from "../../context/Contexts.js";
 import Button from "../common/Button.jsx";
 
-export default function TaskItemDelete({
-  task,
-  tasksDispatch,
-  onClickCancelButton,
-}) {
+export default function TaskItemDelete({ task, onClickCancelButton }) {
+  const { tasksDispatch } = useContext(AppDataContext);
+
   return (
     <div className="flex w-full flex-wrap items-center gap-2 p-4 lg:flex-nowrap">
       <p className="text-lg">Are you sure want to delete this task?</p>
