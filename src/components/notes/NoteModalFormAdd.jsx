@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppDataContext, AuthContext } from "../../context/Contexts.js";
 import TextInput from "../common/TextInput.jsx";
 import Button from "../common/Button.jsx";
 
-export default function NoteModalFormAdd({ setModal, notesDispatch }) {
+export default function NoteModalFormAdd({ setModal }) {
+  const { currentUser } = useContext(AuthContext);
+  const { notesDispatch } = useContext(AppDataContext);
   const [validation, setValidation] = useState({
     title: "",
     message: "",
@@ -19,7 +22,14 @@ export default function NoteModalFormAdd({ setModal, notesDispatch }) {
     };
     const isInvalid = !Object.values(newValidation).every((value) => !value);
     if (isInvalid) return setValidation(newValidation);
-    notesDispatch({ type: "ADD_NOTE", payload: { title, message } });
+    notesDispatch({
+      type: "ADD_NOTE",
+      payload: {
+        userId: currentUser.id,
+        title,
+        message,
+      },
+    });
     setModal({ show: false, type: null, note: null });
   }
 

@@ -5,7 +5,7 @@ import NoteModalView from "./NoteModalView.jsx";
 import NoteModalFormEdit from "./NoteModalFormEdit.jsx";
 import NoteModalFormAdd from "./NoteModalFormAdd.jsx";
 
-export default function NoteModal({ modal, setModal, notesDispatch }) {
+export default function NoteModal({ modal, setModal }) {
   return (
     <div className="fixed inset-0 z-30 h-screen w-full overflow-x-hidden overflow-y-auto bg-slate-950/50 p-5">
       <div className="mx-auto w-full max-w-160 rounded-lg bg-slate-950 text-slate-200">
@@ -19,19 +19,11 @@ export default function NoteModal({ modal, setModal, notesDispatch }) {
           </Button>
         </div>
         {modal.type === "view" ? (
-          <NoteModalView
-            setModal={setModal}
-            note={modal.note}
-            notesDispatch={notesDispatch}
-          />
+          <NoteModalView setModal={setModal} note={modal.note} />
         ) : modal.type === "edit" ? (
-          <NoteModalFormEdit
-            setModal={setModal}
-            note={modal.note}
-            notesDispatch={notesDispatch}
-          />
+          <NoteModalFormEdit setModal={setModal} note={modal.note} />
         ) : modal.type === "add" ? (
-          <NoteModalFormAdd setModal={setModal} notesDispatch={notesDispatch} />
+          <NoteModalFormAdd setModal={setModal} />
         ) : (
           ""
         )}

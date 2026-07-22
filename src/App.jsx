@@ -1,7 +1,10 @@
 import { useEffect, useReducer, useState } from "react";
 import { Routes, Route } from "react-router";
-import { AuthContext } from "./context/Contexts.js";
-import { usersReducer, usersInit } from "./reducers/usersReducer.js";
+import { AppDataContext, AuthContext } from "./context/Contexts.js";
+import { tasksInit, tasksReducer } from "./reducers/tasksReducer.js";
+import { habitsInit, habitsReducer } from "./reducers/habitsReducer.js";
+import { notesInit, notesReducer } from "./reducers/notesReducer.js";
+import { usersInit, usersReducer } from "./reducers/usersReducer.js";
 import { currentUserReducer } from "./reducers/currentUserReducer.js";
 import DashboardLayout from "./layouts/DashboardLayout.jsx";
 import TasksPage from "./pages/TasksPage.jsx";
@@ -14,6 +17,9 @@ import Loading from "./components/common/Loading.jsx";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [tasks, tasksDispatch] = useReducer(tasksReducer, null, tasksInit);
+  const [habits, habitsDispatch] = useReducer(habitsReducer, null, habitsInit);
+  const [notes, notesDispatch] = useReducer(notesReducer, null, notesInit);
   const [users, usersDispatch] = useReducer(usersReducer, null, usersInit);
   const [currentUser, currentUserDispatch] = useReducer(
     currentUserReducer,
@@ -21,15 +27,22 @@ export default function App() {
   );
 
   useEffect(() => {
+    localStorage.setItem("prodhub_tasks", JSON.stringify(tasks));
+  }, [tasks]);
+  useEffect(() => {
+    localStorage.setItem("prodhub_habits", JSON.stringify(habits));
+  }, [habits]);
+  useEffect(() => {
+    localStorage.setItem("prodhub_notes", JSON.stringify(notes));
+  }, [notes]);
+  useEffect(() => {
     localStorage.setItem("prodhub_users", JSON.stringify(users));
   }, [users]);
-
   useEffect(() => {
     if (!isLoading) {
       localStorage.setItem("prodhub_current_user", JSON.stringify(currentUser));
     }
   }, [isLoading, currentUser]);
-
   useEffect(() => {
     let currentUserInitTimeout = setTimeout(() => {
       const currentUserJSON = localStorage.getItem("prodhub_current_user");
@@ -42,7 +55,6 @@ export default function App() {
       }
       setIsLoading(false);
     }, 1000);
-
     return () => clearTimeout(currentUserInitTimeout);
   }, []);
 
@@ -57,16 +69,27 @@ export default function App() {
         currentUserDispatch,
       }}
     >
-      <Routes>
-        <Route element={<DashboardLayout />}>
-          <Route index element={<TasksPage />} />
-          <Route path="habits" element={<HabitsPage />} />
-          <Route path="notes" element={<NotesPage />} />
-        </Route>
-        <Route path="signup" element={<SignUpPage />} />
-        <Route path="signin" element={<SignInPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <AppDataContext
+        value={{
+          tasks,
+          tasksDispatch,
+          habits,
+          habitsDispatch,
+          notes,
+          notesDispatch,
+        }}
+      >
+        <Routes>
+          <Route element={<DashboardLayout />}>
+            <Route index element={<TasksPage />} />
+            <Route path="habits" element={<HabitsPage />} />
+            <Route path="notes" element={<NotesPage />} />
+          </Route>
+          <Route path="signup" element={<SignUpPage />} />
+          <Route path="signin" element={<SignInPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </AppDataContext>
     </AuthContext>
   );
 }

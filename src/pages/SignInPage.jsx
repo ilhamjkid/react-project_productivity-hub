@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router";
 import { AuthContext } from "../context/Contexts.js";
 import AuthSection from "../components/auth/AuthSection.jsx";
 import TextInput from "../components/common/TextInput.jsx";
@@ -8,7 +7,6 @@ import Button from "../components/common/Button.jsx";
 
 export default function SignIn() {
   const authContext = useContext(AuthContext);
-  const navigate = useNavigate();
   const [validation, setValidation] = useState({
     username: "",
     password: "",
@@ -37,7 +35,6 @@ export default function SignIn() {
     const isInvalid = !Object.values(newValidation).every((value) => !value);
     if (isInvalid) return setValidation(newValidation);
     authContext.currentUserDispatch({ type: "LOGIN_USER", payload: user });
-    navigate("/", { replace: true });
   }
 
   return (

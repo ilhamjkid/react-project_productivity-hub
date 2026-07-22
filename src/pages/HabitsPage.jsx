@@ -1,23 +1,30 @@
-import { useEffect, useReducer, useState } from "react";
-import { habitsInit, habitsReducer } from "../reducers/habitsReducer.js";
+import { useContext, useState } from "react";
+import { AppDataContext, AuthContext } from "../context/Contexts.js";
 import TextInput from "../components/common/TextInput.jsx";
 import Button from "../components/common/Button.jsx";
 import HabitItem from "../components/habits/HabitItem.jsx";
 
 export default function HabitsPage() {
-  const [habits, habitsDispatch] = useReducer(habitsReducer, null, habitsInit);
+  const { currentUser } = useContext(AuthContext);
+  const { habits, habitsDispatch } = useContext(AppDataContext);
   const [validation, setValidation] = useState("");
 
-  useEffect(() => {
-    localStorage.setItem("prodhub_habits", JSON.stringify(habits));
-  }, [habits]);
+  const habitsByCurrentUser = habits
+    .filter((habit) => habit.userId === currentUser.id)
+    .toReversed();
 
   function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const habitText = formData.get("habitText");
     if (!habitText) return setValidation("Your habit cannot be empty.");
-    habitsDispatch({ type: "ADD_HABIT", payload: { text: habitText } });
+    habitsDispatch({
+      type: "ADD_HABIT",
+      payload: {
+        userId: currentUser.id,
+        text: habitText,
+      },
+    });
     if (validation) setValidation("");
     e.target.reset();
   }
@@ -34,14 +41,12 @@ export default function HabitsPage() {
           />
           <Button type="submit">SUBMIT</Button>
         </form>
-        {habits.length === 0 ? (
+        {habitsByCurrentUser.length === 0 ? (
           <h3 className="text-center text-xl">Habit Empty</h3>
         ) : (
           <ul className="w-full divide-y divide-slate-900 overflow-hidden rounded-lg bg-slate-800">
-            {habits.toReversed().map((habit) => (
-              <li key={habit.id}>
-                <HabitItem habit={habit} habitsDispatch={habitsDispatch} />
-              </li>
+            {habitsByCurrentUser.map((habit) => (
+              <HabitItem key={habit.id} habit={habit} />
             ))}
           </ul>
         )}

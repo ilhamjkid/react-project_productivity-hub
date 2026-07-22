@@ -1,23 +1,30 @@
-import { useEffect, useReducer, useState } from "react";
-import { tasksReducer, tasksInit } from "../reducers/tasksReducer.js";
+import { useContext, useState } from "react";
+import { AppDataContext, AuthContext } from "../context/Contexts.js";
 import TextInput from "../components/common/TextInput.jsx";
 import Button from "../components/common/Button.jsx";
 import TaskItem from "../components/tasks/TaskItem.jsx";
 
 export default function TasksPage() {
-  const [tasks, tasksDispatch] = useReducer(tasksReducer, null, tasksInit);
+  const { currentUser } = useContext(AuthContext);
+  const { tasks, tasksDispatch } = useContext(AppDataContext);
   const [validation, setValidation] = useState("");
 
-  useEffect(() => {
-    localStorage.setItem("prodhub_tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  const tasksByCurrentUser = tasks
+    .filter((task) => task.userId === currentUser.id)
+    .toReversed();
 
   function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const taskText = formData.get("taskText");
     if (!taskText) return setValidation("Your task cannot be empty.");
-    tasksDispatch({ type: "ADD_TASK", payload: { text: taskText } });
+    tasksDispatch({
+      type: "ADD_TASK",
+      payload: {
+        userId: currentUser.id,
+        text: taskText,
+      },
+    });
     if (validation) setValidation("");
     e.target.reset();
   }
@@ -34,14 +41,12 @@ export default function TasksPage() {
           />
           <Button type="submit">SUBMIT</Button>
         </form>
-        {tasks.length === 0 ? (
+        {tasksByCurrentUser.length === 0 ? (
           <h3 className="text-center text-xl">Task Empty</h3>
         ) : (
           <ul className="w-full divide-y divide-slate-900 overflow-hidden rounded-lg bg-slate-800">
-            {tasks.toReversed().map((task) => (
-              <li key={task.id}>
-                <TaskItem task={task} tasksDispatch={tasksDispatch} />
-              </li>
+            {tasksByCurrentUser.map((task) => (
+              <TaskItem key={task.id} task={task} />
             ))}
           </ul>
         )}

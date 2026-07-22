@@ -1,24 +1,25 @@
 import { useState } from "react";
-import HabitItemDelete from "./HabitItemDelete.jsx";
 import HabitItemView from "./HabitItemView.jsx";
+import HabitItemDelete from "./HabitItemDelete.jsx";
 
-export default function HabitItem({ habit, habitsDispatch }) {
+export default function HabitItem({ habit }) {
   const [status, setStatus] = useState("view");
 
-  if (status === "delete") {
-    return (
-      <HabitItemDelete
-        habit={habit}
-        habitsDispatch={habitsDispatch}
-        onClickCancelButton={() => setStatus("view")}
-      />
-    );
-  }
   return (
-    <HabitItemView
-      habit={habit}
-      habitsDispatch={habitsDispatch}
-      onClickDeleteStatusButton={() => setStatus("delete")}
-    />
+    <li>
+      {status === "view" ? (
+        <HabitItemView
+          habit={habit}
+          onClickDeleteStatusButton={() => setStatus("delete")}
+        />
+      ) : status === "delete" ? (
+        <HabitItemDelete
+          habit={habit}
+          onClickCancelButton={() => setStatus("view")}
+        />
+      ) : (
+        ""
+      )}
+    </li>
   );
 }

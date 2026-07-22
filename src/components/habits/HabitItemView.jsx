@@ -1,18 +1,19 @@
+import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
   faCircleXmark,
   faDeleteLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import { AppDataContext } from "../../context/Contexts.js";
 import Button from "../common/Button.jsx";
 
-export default function HabitItemView({
-  habit,
-  habitsDispatch,
-  onClickDeleteStatusButton,
-}) {
+export default function HabitItemView({ habit, onClickDeleteStatusButton }) {
+  const { habitsDispatch } = useContext(AppDataContext);
+
   const streak = calculateStreak(habit);
   const isTodayDone = checkIsTodayDone(habit);
+
   return (
     <div className="flex w-full flex-wrap items-center gap-2 p-4 lg:flex-nowrap">
       <div className="flex items-center gap-1">
